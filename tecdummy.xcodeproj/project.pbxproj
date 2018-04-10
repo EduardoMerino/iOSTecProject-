@@ -10,6 +10,7 @@
 		00104966207950020091AAF7 /* MyAssests in Resources */ = {isa = PBXBuildFile; fileRef = 00104965207950020091AAF7 /* MyAssests */; };
 		004F46AE20752A75009F9934 /* TextReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F46AD20752A75009F9934 /* TextReminderCell.swift */; };
 		004F46B020752CA4009F9934 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F46AF20752CA4009F9934 /* HomeTableViewController.swift */; };
+		00D5E3AF207D29910033A20A /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5E3AE207D29910033A20A /* MapViewController.swift */; };
 		F4DA21E72062A8DA000DC127 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DA21E62062A8DA000DC127 /* AppDelegate.swift */; };
 		F4DA21E92062A8DA000DC127 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DA21E82062A8DA000DC127 /* ViewController.swift */; };
 		F4DA21EC2062A8DA000DC127 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4DA21EA2062A8DA000DC127 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 		00104965207950020091AAF7 /* MyAssests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MyAssests; sourceTree = "<group>"; };
 		004F46AD20752A75009F9934 /* TextReminderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextReminderCell.swift; sourceTree = "<group>"; };
 		004F46AF20752CA4009F9934 /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
+		00D5E3AE207D29910033A20A /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		F4DA21E32062A8DA000DC127 /* tecdummy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tecdummy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4DA21E62062A8DA000DC127 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4DA21E82062A8DA000DC127 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				F4DA21F22062A8DA000DC127 /* Info.plist */,
 				004F46AD20752A75009F9934 /* TextReminderCell.swift */,
 				004F46AF20752CA4009F9934 /* HomeTableViewController.swift */,
+				00D5E3AE207D29910033A20A /* MapViewController.swift */,
 			);
 			path = tecdummy;
 			sourceTree = "<group>";
@@ -149,6 +152,7 @@
 				004F46B020752CA4009F9934 /* HomeTableViewController.swift in Sources */,
 				004F46AE20752A75009F9934 /* TextReminderCell.swift in Sources */,
 				F4DA21E92062A8DA000DC127 /* ViewController.swift in Sources */,
+				00D5E3AF207D29910033A20A /* MapViewController.swift in Sources */,
 				F4DA21E72062A8DA000DC127 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

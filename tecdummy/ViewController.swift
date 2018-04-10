@@ -30,24 +30,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.passwordTextField.tag = 1
         
     }
-    
-    func myURLRequest(){
-        // preparing http request
-        let yourUrl = URL(string: "https://6ht6ovuahj.execute-api.us-east-1.amazonaws.com/api/")! // whatever is your url
-        let yourAuthorizationToken = "9638dce2-e237-4913-91de-2024562c450d" // whatever is your token
-        let yourPayload = Data() // whatever is your payload
-        //making request
-        var request = URLRequest(url:yourUrl)
-        request.httpMethod = "POST"
-        request.setValue(yourAuthorizationToken, forHTTPHeaderField: "Authorization")
-        request.httpBody = yourPayload
-        // executing the call
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
-            // your stuff here
-        })
-        task.resume()
-    }
 
     @IBAction func registerButtonClick(_ sender: Any) {
         let alert = UIAlertController(title: "Register", message: nil, preferredStyle: .alert)
@@ -176,7 +158,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         request.httpMethod = "POST"
         guard let myHttpBody = try? JSONSerialization.data(withJSONObject: params, options: []) else {return}
         request.httpBody = myHttpBody
-        //request.addValue(loginString, forHTTPHeaderField: "")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let session = URLSession.shared
         

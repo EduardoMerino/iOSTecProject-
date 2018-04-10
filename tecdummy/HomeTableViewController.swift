@@ -14,8 +14,7 @@ class HomeTableViewController: UITableViewController {
     var token = ""
     var username = ""
     var allPosts = [String: Any]()
-    var allPostsData = [Any]()
-    var allPostsJSON: [[String: Any]] = []
+    var allPostsData = [[String: Any]]()
     @IBOutlet weak var backgroundImage: UIImageView!
     
     override func viewDidLoad() {
@@ -28,14 +27,6 @@ class HomeTableViewController: UITableViewController {
         //GET from API
         print("TOKEN from HOME: \(self.token)")
         self.getFromURL()
-        
-        //format result
-        /*
-        for element in self.allPostsData{
-            guard let elementJSON = try? JSONSerialization.data(withJSONObject: element, options: []) else { return }
-            self.allPostsJSON.append(elementJSON as! [String: Any])
-        }
-        */
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -65,7 +56,30 @@ class HomeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! TextReminderCell
         
         // Configure the cell...
-        //cell.nameLabel.text = self.allPostsData[indexPath]["name"] as! String
+        //name:
+        if let name = self.allPostsData[indexPath.row]["name"] as? String{
+            cell.nameLabel.text = name
+        }else{ print("Couldnt find name") }
+        //date:
+        if let date = self.allPostsData[indexPath.row]["date"] as? String{
+            cell.dateLabel.text = date
+        }else{ print("Coundt find date") }
+        //content:
+        if let content = self.allPostsData[indexPath.row]["content"] as? String{
+            cell.contentLabel.text = content
+        }else{ print("couldnt find content")}
+        //latitude:
+        if let latitude = self.allPostsData[indexPath.row]["latitude"] as? Double{
+            cell.latitude = latitude
+        }else{ print("Couldnt get latitude")}
+        //longitude:
+        if let longitude = self.allPostsData[indexPath.row]["longitude"] as? Double{
+            cell.longitude = longitude
+        }else{ print("Couldnt get longitude")}
+        //address:
+        if let address = self.allPostsData[indexPath.row]["address"] as? String{
+            cell.address = address
+        }else{ print("Couldnt get address")}
         
         return cell
     }
@@ -96,7 +110,6 @@ class HomeTableViewController: UITableViewController {
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
                     self.allPosts = json as! [String: Any]
                     self.allPostsData = self.allPosts["data"] as! [[String: Any]]
-                    //print("JSON from HOME: \(self.allPosts["data"]!)")
                     print("JSON from HOME[0]: \(self.allPostsData[0])")
                 }catch{
                     print("ERROR from HOME: \(error)")
@@ -107,50 +120,15 @@ class HomeTableViewController: UITableViewController {
         }.resume()
         dispatchGroup.wait()
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "MapView") as! MapViewController
+        let cell = tableView.cellForRow(at: indexPath) as! TextReminderCell
+        nextViewController.address = cell.address
+        nextViewController.latitude = cell.latitude
+        nextViewController.longitude = cell.longitude
+        
+        self.navigationController?.pushViewController(nextViewController, animated:true)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
