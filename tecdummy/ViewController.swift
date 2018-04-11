@@ -9,63 +9,63 @@
 import UIKit
 
 class ViewController: UIViewController, UITextFieldDelegate {
-    
+
     var loginResponse = [String: Any]()
     var token = ""
     var statusCode = 0
     let dispatchGroup = DispatchGroup()
-    
+
     @IBOutlet weak var usernameTextfield: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+
         //Text field control:
         self.usernameTextfield.delegate = self
         self.usernameTextfield.tag = 0
         self.passwordTextField.delegate = self
         self.passwordTextField.tag = 1
-        
+
     }
 
     @IBAction func registerButtonClick(_ sender: Any) {
         let alert = UIAlertController(title: "Register", message: nil, preferredStyle: .alert)
-        
+
         alert.addTextField{ (textField:UITextField) in textField.placeholder = "email"}
         let emailTextField = alert.textFields![0]
         alert.addTextField{ (textField2:UITextField) in textField2.placeholder = "password"}
         let passwordTextField = alert.textFields![1]
-        
+
         alert.addAction(UIAlertAction(title: "REGISTER", style: .default, handler: { (action:UIAlertAction) in
             print ("oh ke pressed")
             self.createAccount(email: emailTextField.text!, password: passwordTextField.text!)
         }))
-        
+
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     @IBAction func forgotPasswordButtonClick(_ sender: Any) {
         let forgottenAlert = UIAlertController(title: "Forgot password", message: nil, preferredStyle: .alert)
         forgottenAlert.addAction(UIAlertAction(title: "Recover", style: .default, handler: { (action:UIAlertAction) in print ("recover pressed")}))
         forgottenAlert.addTextField{ (textField:UITextField) in textField.placeholder = "email"}
         forgottenAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
+
         self.present(forgottenAlert, animated: true, completion: nil)
     }
-    
+
     //Login button
     @IBAction func loginButtonClick(_ sender: Any) {
         print("Login Clicked user: \(usernameTextfield.text ?? "nada") pass: \(passwordTextField.text ?? "EqjxonEK")")
-        
+
         //login to API
         self.loginUrlSession()
         print("STATUS from LOGIN: \(self.statusCode)")
         print("JSON from LOGIN: \(self.loginResponse)")
         print("TOKEN from LOGIN: \(self.token)")
-        
+
         //react to status code
         switch (self.statusCode){
         case 200:
@@ -73,23 +73,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
             nextViewController.token = self.token
             nextViewController.username = self.usernameTextfield.text!
             self.navigationController?.pushViewController(nextViewController, animated:true)
-            
+
         case 403:
             let forbiddenAlert = UIAlertController(title: "Forbidden", message: "wrong username or password, please try again", preferredStyle: .alert)
             forbiddenAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action:UIAlertAction) in print ("OK pressed")}))
+            self.present(forbiddenAlert, animated: true, completion: nil)
         default:
             print("DEFAULT")
             let defaultAlert = UIAlertController(title: "Forbidden Def.", message: "wrong username or password, please try again", preferredStyle: .alert)
             defaultAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action:UIAlertAction) in print ("OK pressed")}))
+            self.present(defaultAlert, animated: true, completion: nil)
         }
     }
-    
-    
+
     //hide keyboard on tap
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
+
     //return key change text field
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Try to find next responder
@@ -99,21 +100,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
             // Not found, so remove keyboard.
             textField.resignFirstResponder()
         }
-        
+
         if textField.tag == 1 {
             self.loginButtonClick(self)
         }
-        
+
         return false
     }
-    
+
     func loginUrlSession(){
         self.dispatchGroup.enter()
         //username and password params
         let username = self.usernameTextfield.text
         let password = self.passwordTextField.text
         let params = ["username": username!, "password": password!]
-        
+
         //request
         guard let url = URL(string: "https://6ht6ovuahj.execute-api.us-east-1.amazonaws.com/api/login/") else { return }
         var request = URLRequest(url: url)
@@ -122,7 +123,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         request.httpBody = myHttpBody
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let session = URLSession.shared
-        
+
         //do stuff with session
         session.dataTask(with: request) { (data, response, error) in
             if let response = response{
@@ -143,15 +144,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
             self.dispatchGroup.leave()
         }.resume()
-        
+
         dispatchGroup.wait()
     }
-    
+
     func createAccount(email: String, password: String){
         print("At CREATE ACCOUNT REGISTER: email: \(email) password: \(password)")
         //parameter
         let params = ["email": email, "password": password]
-        
+
         //request
         guard let url = URL(string: "https://6ht6ovuahj.execute-api.us-east-1.amazonaws.com/api/register/") else { return }
         var request = URLRequest(url: url)
@@ -160,7 +161,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         request.httpBody = myHttpBody
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let session = URLSession.shared
-        
+
         //do stuff with session
         session.dataTask(with: request) { (data, response, error) in
             if let response = response{
@@ -177,15 +178,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
             }.resume()
     }
-    
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-
 
 }
-

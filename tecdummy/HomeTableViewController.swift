@@ -9,25 +9,27 @@
 import UIKit
 
 class HomeTableViewController: UITableViewController {
-    
+
     let dispatchGroup = DispatchGroup()
     var token = ""
     var username = ""
     var allPosts = [String: Any]()
     var allPostsData = [[String: Any]]()
     @IBOutlet weak var backgroundImage: UIImageView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         //format
         backgroundImage.contentMode = .scaleAspectFill
         tableView.backgroundView = self.backgroundImage
-        
+        tableView.estimatedRowHeight = 300
+        tableView.rowHeight = UITableViewAutomaticDimension
+
         //GET from API
         print("TOKEN from HOME: \(self.token)")
         self.getFromURL()
-        
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -51,10 +53,10 @@ class HomeTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return self.allPostsData.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! TextReminderCell
-        
+
         // Configure the cell...
         //name:
         if let name = self.allPostsData[indexPath.row]["name"] as? String{
@@ -73,16 +75,16 @@ class HomeTableViewController: UITableViewController {
             cell.id = Int(id)!
             print("the ID is: \(cell.id)")
         }else{ print("Couldn't get id") }
-        
+
         return cell
     }
-    
+
     func getFromURL(){
         self.dispatchGroup.enter()
-        
+
         //params
         let params = ["username": self.username, "token": self.token]
-        
+
         //request
         guard let url = URL(string: "https://6ht6ovuahj.execute-api.us-east-1.amazonaws.com/api/posts/") else { return }
         var request = URLRequest(url: url)
@@ -91,7 +93,7 @@ class HomeTableViewController: UITableViewController {
         request.httpBody = myHttpBody
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let session = URLSession.shared
-        
+
         //do stuff with session
         session.dataTask(with: request) { (data, response, error) in
             if let response = response{
@@ -107,21 +109,21 @@ class HomeTableViewController: UITableViewController {
                 }catch{
                     print("ERROR from HOME: \(error)")
                 }
-                
+
                 self.dispatchGroup.leave()
             }
         }.resume()
         dispatchGroup.wait()
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "MapView") as! MapViewController
         let cell = tableView.cellForRow(at: indexPath) as! TextReminderCell
-        
+
         nextViewController.username = self.username
         nextViewController.token = self.token
         nextViewController.id = cell.id
-        
+
         self.navigationController?.pushViewController(nextViewController, animated:true)
     }
 
