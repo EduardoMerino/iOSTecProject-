@@ -68,18 +68,11 @@ class HomeTableViewController: UITableViewController {
         if let content = self.allPostsData[indexPath.row]["content"] as? String{
             cell.contentLabel.text = content
         }else{ print("couldnt find content")}
-        //latitude:
-        if let latitude = self.allPostsData[indexPath.row]["latitude"] as? Double{
-            cell.latitude = latitude
-        }else{ print("Couldnt get latitude")}
-        //longitude:
-        if let longitude = self.allPostsData[indexPath.row]["longitude"] as? Double{
-            cell.longitude = longitude
-        }else{ print("Couldnt get longitude")}
-        //address:
-        if let address = self.allPostsData[indexPath.row]["address"] as? String{
-            cell.address = address
-        }else{ print("Couldnt get address")}
+        //id.
+        if let id = self.allPostsData[indexPath.row]["id"] as? String{
+            cell.id = Int(id)!
+            print("the ID is: \(cell.id)")
+        }else{ print("Couldn't get id") }
         
         return cell
     }
@@ -124,9 +117,10 @@ class HomeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "MapView") as! MapViewController
         let cell = tableView.cellForRow(at: indexPath) as! TextReminderCell
-        nextViewController.address = cell.address
-        nextViewController.latitude = cell.latitude
-        nextViewController.longitude = cell.longitude
+        
+        nextViewController.username = self.username
+        nextViewController.token = self.token
+        nextViewController.id = cell.id
         
         self.navigationController?.pushViewController(nextViewController, animated:true)
     }

@@ -14,9 +14,7 @@ class TextReminderCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
-    var address = ""
+    var id: Int = 0
     
 
     override func awakeFromNib() {
